@@ -65,7 +65,6 @@ const App = () => {
             matrix.rows,
             matrix.columns
         );
-        console.log(memoryCards);
         setCards(memoryCards);
     }, [matrix]);
 
