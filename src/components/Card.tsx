@@ -1,37 +1,33 @@
 // * Node modules
-import { useEffect, useState } from "react";
 import { twMerge } from "tailwind-merge";
 
 // * Types
 type CardProps = {
-    isFlipped?: boolean;
+    isFlipped: boolean;
+    frontImg: string;
+    onClick: () => void;
 };
 
 // * Component
-const Card = ({ isFlipped = false }: CardProps) => {
-    const [flipped, setFlipped] = useState<boolean>(isFlipped);
-
+const Card = ({ isFlipped, frontImg, onClick }: CardProps) => {
     // * Handle card click to toggle flip state
     const handleCardClick = () => {
-        setFlipped((prev) => !prev);
+        onClick();
     };
-
-    // * Change the state using the `flip` state variable from the parent component.
-    useEffect(() => {
-        setFlipped(isFlipped);
-    }, [isFlipped]);
 
     return (
         <div
-            className={twMerge("w-32 h-32 perspective-[1000px] cursor-pointer")}
+            className={twMerge(
+                "w-16 h-16 perspective-[1000px] cursor-pointer rounded-2xl overflow-hidden"
+            )}
             onClick={handleCardClick}
         >
             <div
                 className={twMerge(
-                    "w-full h-full relative transform-3d transition-transform duration-700",
-                    flipped ? "-rotate-y-180" : ""
+                    "w-full h-full relative transform-3d transition-transform duration-500",
+                    !isFlipped ? "-rotate-y-180" : ""
                 )}
-                data-flipped={flipped}
+                data-flipped={isFlipped}
             >
                 {/* Card front */}
                 <div
@@ -39,18 +35,19 @@ const Card = ({ isFlipped = false }: CardProps) => {
                         "absolute w-full h-full backface-hidden"
                     )}
                 >
-                    Front
+                    <img
+                        className="w-full h-full object-cover"
+                        src={frontImg}
+                    />
                 </div>
                 {/* Card back */}
                 <div
                     className={twMerge(
                         "absolute w-full h-full backface-hidden",
-                        "bg-linear-60 from-[#0a74da] to-[#053f7d] color-white",
+                        "bg-gray-100",
                         "-rotate-y-180"
                     )}
-                >
-                    Back
-                </div>
+                ></div>
             </div>
         </div>
     );
